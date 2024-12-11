@@ -5,17 +5,35 @@ const User = require("../models/userModel");
 const register = async (req, res) => {
   try {
     const { username, password, role } = req.body;
-    const hashedPassword = bcrypt.hash(password);
+
+    // Validate input
+    if (!username || !password || !role) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists!" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // Await the result
+
+    // Create a new user
     const newUser = new User({ username, password: hashedPassword, role });
     await newUser.save();
+
     res
       .status(201)
       .json({ message: `User registered with the username: ${username}` });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
-    console.log(error);
+    console.error(error);
   }
 };
+
+
 const login = async (req, res) => {
   const { username, password } = req.body;
   //    we use .findOne method because it is already stated that the username should be unique in userModel.js
