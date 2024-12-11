@@ -1,0 +1,28 @@
+Api Endpoints:
+Register User:
+http://localhost:1234/api/auth/register
+    Register Payload Data(JSON):
+    {
+        "username": "CLint",
+        "password": "11234",
+        "role": "admin"
+    }
+
+Login User:
+http://localhost:1234/api/auth/Login
+ Login Payload Data(JSON):
+    {
+        "username": "CLint",
+        "password": "11234",
+    }
+
+Protected Routes:
+Can only be accessed by admin :
+http://localhost:1234/api/users/admin
+
+ Can be accessed by admin and manager:
+http://localhost:1234/api/users/manager
+
+Can be accessed by admin, manager and user:
+http://localhost:1234/api/users/user
+
