@@ -6,10 +6,10 @@ const router = express.Router();
 router.get('/admin', verifyToken, authorizeRole('admin'), (req, res)=>{
     res.json(`Welcome admin!`)
 })
-router.get('/manager',verifyToken, authorizeRole('admin, manager'),(req, res)=>{
+router.get('/manager',verifyToken, authorizeRole('admin', 'manager'),(req, res)=>{
     res.json(`Welcome manager!`)
 })
-router.get('/user',verifyToken, authorizeRole('admin,manager,user'),(req, res)=>{
+router.get('/user',verifyToken, authorizeRole('admin','manager','user'),(req, res)=>{
     res.json(`Welcome user!`)
 })
 
