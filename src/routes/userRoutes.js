@@ -6,11 +6,11 @@ const router = express.Router();
 router.get('/admin', verifyToken, authorizeRole('admin'), (req, res)=>{
     res.json(`Welcome admin!`)
 })
-router.get('/manager',verifyToken, authorizeRole('admin', 'manager'),(req, res)=>{
-    res.json(`Welcome manager!`)
+router.get('/seller',verifyToken, authorizeRole('admin', 'seller'),(req, res)=>{
+    res.json(`Welcome seller!`)
 })
-router.get('/user',verifyToken, authorizeRole('admin','manager','user'),(req, res)=>{
-    res.json(`Welcome user!`)
+router.get('/buyer',verifyToken, authorizeRole('admin','seller','buyer'),(req, res)=>{
+    res.json(`Welcome buyer!`)
 })
 
 module.exports = router

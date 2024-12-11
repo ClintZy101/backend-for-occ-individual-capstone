@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({ // Use `Schema` here
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'user', 'manager'], // Restrict values to specific roles
+        enum: ['admin', 'seller', 'buyer'], // Restrict values to specific roles
     },
 }, {
     timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields

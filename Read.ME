@@ -1,5 +1,17 @@
 Api Endpoints:
+Production:
+https://backend-for-occ-individual-capstone.onrender.com/
+https://backend-for-occ-individual-capstone.onrender.com/api/auth/Login
+https://backend-for-occ-individual-capstone.onrender.com/api/auth/register
+https://backend-for-occ-individual-capstone.onrender.com/api/users/admin
+https://backend-for-occ-individual-capstone.onrender.com/api/users/manager
+https://backend-for-occ-individual-capstone.onrender.com/api/users/user
+
+
+
+Development
 Register User:
+Post Method
 http://localhost:1234/api/auth/register
     Register Payload Data(JSON):
     {
@@ -9,6 +21,7 @@ http://localhost:1234/api/auth/register
     }
 
 Login User:
+Post Method
 http://localhost:1234/api/auth/Login
  Login Payload Data(JSON):
     {
@@ -17,6 +30,7 @@ http://localhost:1234/api/auth/Login
     }
 
 Protected Routes:
+Get Method
 Can only be accessed by admin :
 http://localhost:1234/api/users/admin
 
