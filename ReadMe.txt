@@ -1,11 +1,11 @@
 Api Endpoints:
 Production:
 https://backend-for-occ-individual-capstone.onrender.com/
-https://backend-for-occ-individual-capstone.onrender.com/api/auth/Login
+https://backend-for-occ-individual-capstone.onrender.com/api/auth/login
 https://backend-for-occ-individual-capstone.onrender.com/api/auth/register
 https://backend-for-occ-individual-capstone.onrender.com/api/users/admin
-https://backend-for-occ-individual-capstone.onrender.com/api/users/manager
-https://backend-for-occ-individual-capstone.onrender.com/api/users/user
+https://backend-for-occ-individual-capstone.onrender.com/api/users/seller
+https://backend-for-occ-individual-capstone.onrender.com/api/users/buyer
 
 
 
@@ -34,9 +34,9 @@ Get Method
 Can only be accessed by admin :
 http://localhost:1234/api/users/admin
 
- Can be accessed by admin and manager:
-http://localhost:1234/api/users/manager
+ Can be accessed by admin and seller:
+http://localhost:1234/api/users/seller
 
-Can be accessed by admin, manager and user:
-http://localhost:1234/api/users/user
+Can be accessed by admin, seller and buyer:
+http://localhost:1234/api/users/buyer
 
