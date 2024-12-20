@@ -5,32 +5,30 @@ const User = require('../models/userModel.js');
 // const addProduct = async (req, res) => {
 //   try {
 //     const { title, price, on_sale, category, overview, prod_info, src } = req.body;
+//     const userId = req.user.id; // Get user ID from the authenticated user (e.g., from JWT)
 
-//     // Validate required fields
-//     if (!title || !price || !category || !overview || !prod_info || !src) {
-//       return res.status(400).json({ message: "All fields are required" });
-//     }
-
-//     // Create the new product
+//     // Create a new product
 //     const newProduct = new Product({
 //       title,
 //       price,
 //       on_sale,
-//       category: category.split(",").map((cat) => cat.trim()), // Split categories by commas
+//       category,
 //       overview,
 //       prod_info,
 //       src,
+//       user: userId, // Associate the product with the user
 //     });
 
+//     // Save the product to the database
 //     await newProduct.save();
-//     res.status(201).json({ message: "Product added successfully", product: newProduct });
+
+//     res.status(201).json({ message: "Product added successfully!", product: newProduct });
 //   } catch (error) {
-//     console.error("Error adding product:", error);
-//     res.status(500).json({ message: "Server error. Could not add product." });
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
 //   }
 // };
 
-// Add a new product
 const addProduct = async (req, res) => {
   try {
     const { title, price, on_sale, category, overview, prod_info, src } = req.body;
@@ -51,24 +49,16 @@ const addProduct = async (req, res) => {
     // Save the product to the database
     await newProduct.save();
 
-    res.status(201).json({ message: "Product added successfully!", product: newProduct });
+    // Populate user details (email and username)
+    const populatedProduct = await Product.findById(newProduct._id).populate("user", "id email username");
+
+    res.status(201).json({ message: "Product added successfully!", product: populatedProduct });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
-// Get all products
-const getProducts = async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.status(200).json(products);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ message: "Server error. Could not fetch products." });
-  }
-};
 
 // Get products for the logged-in user
 const getUserProducts = async (req, res) => {
@@ -92,8 +82,23 @@ const getUserProducts = async (req, res) => {
   }
 };
 
+const getAllProducts = async (req, res) => {
+  try {
+    // Fetch all products and populate the user field
+    const products = await Product.find().populate("user", "username email");
+
+    // Log the products to verify the data
+    console.log("Fetched products with user details:", products);
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Server error. Could not fetch products." });
+  }
+};
+
 module.exports = {
   addProduct,
-  getProducts,
-  getUserProducts
+  getAllProducts,
+  getUserProducts,
 };
