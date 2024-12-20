@@ -4,7 +4,7 @@ const cors = require('cors');
 const dbConnect = require('./config/dbConnect');
 const authRoutes = require('./routes/authRoutes.js')
 const userRoutes = require('./routes/userRoutes.js')
-
+const productRoutes = require('./routes/productRoutes.js')
 const app = express();
 dbConnect();
 
@@ -16,11 +16,12 @@ app.use(express.urlencoded({extended:true}))
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use("/api/products", productRoutes);
 
 const PORT = process.env.PORT || 4321
 
 app.get('/', (req, res) =>{
-    res.send(`Hello, This is app for basic User Roles Authorization`)
+    res.send(`Hello, This is app for B2B ecommerce website`)
 })
 
 app.listen(PORT, () =>{

@@ -2,29 +2,72 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
+const checkAvailability = async (req, res) => {
+  const { username, email } = req.body;
+  if (!username || !email) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  try {
+    const userExists = await User.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (userExists) {
+      if (userExists.email === email) {
+        return res
+          .status(400)
+          .json({ message: "Email is already registered." });
+      }
+      if (userExists.username === username) {
+        return res.status(400).json({ message: "Username is already taken." });
+      }
+    }
+
+    return res.status(200).json({ message: "Available." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error." });
+  }
+};
+
 const register = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
     // Validate input
-    if (!email || !password || !role) {
+    if (!username || !email || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     // Check if the username already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already exists!" });
+    const userExists = await User.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (userExists) {
+      if (userExists.email === email) {
+        return res
+          .status(400)
+          .json({ message: "Email is already registered." });
+      }
+      if (userExists.username === username) {
+        return res.status(400).json({ message: "Username is already taken." });
+      }
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10); // Await the result
 
     // Create a new user
-    const newUser = new User({ email: email, password: hashedPassword, role });
+    const newUser = new User({
+      username: username,
+      email: email,
+      password: hashedPassword,
+      role,
+    });
     await newUser.save();
 
-    res
+    res 
       .status(201)
       .json({ message: `User registered with the email: ${email}` });
   } catch (error) {
@@ -33,19 +76,16 @@ const register = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
-  const {  email, password } = req.body;
+  const { email, password } = req.body;
   //    we use .findOne method because it is already stated that the username should be unique in userModel.js
-  const user = await User.findOne({  email });
+  const user = await User.findOne({ email });
   try {
     if (!user) {
       // 404 = not found
-      return res
-        .status(404)
-        .json({ message: `Email: ${email} not found!` });
+      return res.status(404).json({ message: `Email: ${email} not found!` });
     }
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       // client error
       return res.status(400).json({ message: `Invalid credentials.` });
@@ -56,11 +96,15 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ token });
-  } catch (error) {}
+    res.status(200).json({ user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong!" });
+  }
 };
 
 module.exports = {
   register,
   login,
+  checkAvailability,
 };
