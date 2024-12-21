@@ -32,11 +32,19 @@ const checkAvailability = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, adminKey } = req.body;
 
     // Validate input
     if (!username || !email || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+
+    // Validate admin key for "admin" role
+    if (role === "admin") {
+      if (adminKey !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ message: "Invalid admin key" });
+      }
     }
 
     // Check if the username already exists

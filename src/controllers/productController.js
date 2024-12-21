@@ -140,9 +140,25 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ seller: req.user.id }) // Assuming `seller` is linked to the authenticated user
+      .populate("customer", "username email") // Populate customer details
+      .populate("products.product", "title price"); // Populate product details
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 module.exports = {
   addProduct,
   editProduct,
   getAllProducts,
   getUserProducts,
+  getOrders
 };
+
