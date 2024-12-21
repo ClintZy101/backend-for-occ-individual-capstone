@@ -78,16 +78,13 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  //    we use .findOne method because it is already stated that the username should be unique in userModel.js
   const user = await User.findOne({ email });
   try {
     if (!user) {
-      // 404 = not found
       return res.status(404).json({ message: `Email: ${email} not found!` });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      // client error
       return res.status(400).json({ message: `Invalid credentials.` });
     }
     const token = jwt.sign(
@@ -95,8 +92,9 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    const tokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
 
-    res.status(200).json({ user, token });
+    res.status(200).json({ user, token, tokenExpiry });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong!" });

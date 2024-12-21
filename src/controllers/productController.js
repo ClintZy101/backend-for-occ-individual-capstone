@@ -31,13 +31,14 @@ const User = require('../models/userModel.js');
 
 const addProduct = async (req, res) => {
   try {
-    const { title, price, on_sale, category, overview, prod_info, src } = req.body;
+    const { title, price,stock, on_sale, category, overview, prod_info, src } = req.body;
     const userId = req.user.id; // Get user ID from the authenticated user (e.g., from JWT)
 
     // Create a new product
     const newProduct = new Product({
       title,
       price,
+      stock,
       on_sale,
       category,
       overview,
@@ -55,6 +56,48 @@ const addProduct = async (req, res) => {
     res.status(201).json({ message: "Product added successfully!", product: populatedProduct });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const editProduct = async (req, res) => {
+  try {
+    const { id } = req.params; // Get product ID from URL params
+    const { title, price, stock, on_sale, category, overview, prod_info, src } = req.body;
+    const userId = req.user.id; // Get user ID from the authenticated user (e.g., from JWT)
+
+    // Find the product by ID
+    const product = await Product.findById(id);
+
+    // Check if the product exists
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Ensure the authenticated user is the owner of the product
+    if (product.user.toString() !== userId) {
+      return res.status(403).json({ message: "You are not authorized to edit this product" });
+    }
+
+    // Update product fields
+    product.title = title || product.title;
+    product.price = price || product.price;
+    product.stock = stock || product.stock;
+    product.on_sale = on_sale || product.on_sale;
+    product.category = category || product.category;
+    product.overview = overview || product.overview;
+    product.prod_info = prod_info || product.prod_info;
+    product.src = src || product.src;
+
+    // Save the updated product to the database
+    await product.save();
+
+    // Populate user details (email and username)
+    const updatedProduct = await Product.findById(product._id).populate("user", "id email username");
+
+    res.status(200).json({ message: "Product updated successfully!", product: updatedProduct });
+  } catch (error) {
+    console.error("Error updating product:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -99,6 +142,7 @@ const getAllProducts = async (req, res) => {
 
 module.exports = {
   addProduct,
+  editProduct,
   getAllProducts,
   getUserProducts,
 };
