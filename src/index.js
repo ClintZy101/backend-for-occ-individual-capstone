@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes.js')
 const userRoutes = require('./routes/userRoutes.js')
 const productRoutes = require('./routes/productRoutes.js')
 const paymentRoutes = require('./routes/stripeRoutes.js')
+const orderRoutes = require('./routes/orderRoutes.js')
 const app = express();
 dbConnect();
 
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use("/api/products", productRoutes);
 app.use('/api/payment', paymentRoutes )
+app.use("/api/orders", orderRoutes);
 
 const PORT = process.env.PORT || 4321
 

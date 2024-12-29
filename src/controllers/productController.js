@@ -131,7 +131,7 @@ const getAllProducts = async (req, res) => {
     const products = await Product.find().populate("user", "username email");
 
     // Log the products to verify the data
-    console.log("Fetched products with user details:", products);
+    // console.log("Fetched products with user details:", products);
 
     res.status(200).json(products);
   } catch (error) {
