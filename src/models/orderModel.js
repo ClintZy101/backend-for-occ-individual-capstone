@@ -12,6 +12,7 @@ const orderSchema = new mongoose.Schema(
         category: { type: [String], required: true },
         prod_info: { type: String, required: true },
         src: { type: String, required: true },
+        quantity: { type: Number, required: true },
       },
     ],
     shippingAddress: {
