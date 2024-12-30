@@ -98,7 +98,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
     const tokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
 

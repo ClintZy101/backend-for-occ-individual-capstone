@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    buyer_id: {type: String, required:true},
+    buyer: { email: String, username: String, _id: String, role: String },
     cartItems: [
       {
         _id: { type: String, required: true },
@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema(
         prod_info: { type: String, required: true },
         src: { type: String, required: true },
         quantity: { type: Number, required: true },
+        user: { email: String, username: String, _id: String },
       },
     ],
     shippingAddress: {
@@ -30,4 +31,3 @@ const orderSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Order", orderSchema);
-
