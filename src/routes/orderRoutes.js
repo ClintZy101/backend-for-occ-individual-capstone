@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/", createOrder);
 router.get("/:id", getOrderById);
 router.get("/", verifyToken, authorizeRole('admin'), getAllOrders);
-router.get("/seller/:sellerId", getOrdersBySeller);
+router.get("/seller/:sellerId", verifyToken, authorizeRole('admin', 'seller'), getOrdersBySeller);
 router.put("/seller/order-status", updateOrderStatus);
 router.get("/buyer/:buyerId", getOrderByBuyer);
 
