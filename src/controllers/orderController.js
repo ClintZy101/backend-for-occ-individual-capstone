@@ -75,7 +75,7 @@ const getOrderById = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("user cartItems.product");
+    const orders = await Order.find()
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch orders", error });
@@ -86,6 +86,16 @@ const getOrdersBySeller = async (req, res) => {
   try {
     const sellerId = req.params.sellerId;
     const orders = await Order.find({ "cartItems.user._id": sellerId })
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch orders", error });
+  }
+};
+
+const getOrderByBuyer = async (req, res) => {
+  try {
+    const buyerId = req.params.buyerId;
+    const orders = await Order.find({ "buyer._id": buyerId });
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch orders", error });
@@ -111,4 +121,4 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, getOrderById, getAllOrders, getOrdersBySeller, updateOrderStatus };
+module.exports = { createOrder, getOrderById, getAllOrders, getOrdersBySeller, updateOrderStatus, getOrderByBuyer };

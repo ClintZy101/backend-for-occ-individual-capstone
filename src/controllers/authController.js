@@ -39,7 +39,6 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-
     // Validate admin key for "admin" role
     if (role === "admin") {
       if (adminKey !== process.env.ADMIN_KEY) {
@@ -75,7 +74,7 @@ const register = async (req, res) => {
     });
     await newUser.save();
 
-    res 
+    res
       .status(201)
       .json({ message: `User registered with the email: ${email}` });
   } catch (error) {
@@ -100,7 +99,7 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    const tokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day in milliseconds
 
     res.status(200).json({ user, token, tokenExpiry });
   } catch (error) {
