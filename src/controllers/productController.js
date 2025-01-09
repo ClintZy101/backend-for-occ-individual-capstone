@@ -102,6 +102,33 @@ const editProduct = async (req, res) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find and delete the product by ID
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    // Check if the product exists
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Respond with a success message
+    res.status(200).json({
+      message: 'Product deleted successfully',
+      product: deletedProduct,
+    });
+  } catch (error) {
+    // Handle any errors
+    console.error('Error deleting product:', error);
+    res.status(500).json({
+      message: 'An error occurred while deleting the product',
+      error: error.message,
+    });
+  }
+};
+
 
 // Get products for the logged-in user
 const getUserProducts = async (req, res) => {
@@ -157,6 +184,7 @@ const getOrders = async (req, res) => {
 module.exports = {
   addProduct,
   editProduct,
+  deleteProduct,
   getAllProducts,
   getUserProducts,
   getOrders
