@@ -11,7 +11,27 @@ const app = express();
 dbConnect();
 
 // middleware
-app.use(cors())
+// app.use(cors())
+const PORT = process.env.PORT || 4321
+
+const allowedOrigins = [
+    "http://localhost:5173", "http://localhost:5174", // Local development
+    "https://ecom-full-stack-occ.netlify.app/", // Deployed frontend
+  ];
+  
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+      methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+      credentials: true, // Allow cookies or Authorization headers
+    })
+  );
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -22,7 +42,7 @@ app.use("/api/products", productRoutes);
 app.use('/api/payment', paymentRoutes )
 app.use("/api/orders", orderRoutes);
 
-const PORT = process.env.PORT || 4321
+
 
 app.get('/', (req, res) =>{
     res.send(`Hello, This is app for B2B ecommerce website`)
