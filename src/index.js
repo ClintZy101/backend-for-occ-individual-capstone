@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 4321
 
 const allowedOrigins = [
     "http://localhost:5173", "http://localhost:5174", // Local development
-    "https://ecom-full-stack-occ.netlify.app/", // Deployed frontend
+    "https://ecom-full-stack-occ.netlify.app", // Deployed frontend
   ];
   
   app.use(
