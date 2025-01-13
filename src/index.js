@@ -42,7 +42,17 @@ app.use("/api/products", productRoutes);
 app.use('/api/payment', paymentRoutes )
 app.use("/api/orders", orderRoutes);
 
+// Handle 404 errors
+app.use((req, res, next) => {
+  console.error(`404 Error: Resource not found - ${req.originalUrl}`);
+  res.status(404).json({ message: "Resource not found" });
+});
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(`Global Error Handler: ${err.message}`);
+  res.status(500).json({ message: "Internal Server Error" });
+});
 
 app.get('/', (req, res) =>{
     res.send(`Hello, This is app for B2B ecommerce website`)
