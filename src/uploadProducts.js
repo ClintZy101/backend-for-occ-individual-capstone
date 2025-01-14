@@ -176,9 +176,8 @@ const uploadProducts = async () => {
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB");
 
-    // Admin ObjectId
-    const adminId = new mongoose.Types.ObjectId("676622e21c4bff27384df176");
-
+    // Admin ObjectId: clint-admin
+    const adminId = new mongoose.Types.ObjectId("6785f211ceb5bd6fed9c8070");
 
     // Add `user` field to all products
     const productsWithUser = products.map((product) => ({
