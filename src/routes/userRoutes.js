@@ -1,7 +1,7 @@
 const express = require('express')
 const verifyToken = require('../middlewares/authMiddleware.js')
 const authorizeRole = require('../middlewares/authorizeRole.js');
-const { getAllUsers } = require('../controllers/usersController.js');
+const { getAllUsers, editUser, deleteUser } = require('../controllers/usersController.js');
 const router = express.Router();
 
 router.get('/admin', verifyToken, authorizeRole('admin'), (req, res)=>{
@@ -15,5 +15,7 @@ router.get('/buyer',verifyToken, authorizeRole('admin','seller','buyer'),(req, r
 })
 
 router.get('/all',verifyToken, authorizeRole('admin'), getAllUsers)
+router.put('/edit/:id', verifyToken, authorizeRole('admin'), editUser)
+router.delete('/delete/:id', verifyToken, authorizeRole('admin'), deleteUser)
 
 module.exports = router

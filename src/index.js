@@ -9,6 +9,7 @@ const paymentRoutes = require('./routes/stripeRoutes.js')
 const orderRoutes = require('./routes/orderRoutes.js')
 const app = express();
 
+dbConnect(); // Ensure database connection is established
 
 // middleware
 const PORT = process.env.PORT || 1234
@@ -58,7 +59,6 @@ app.get('/', (req, res) =>{
 })
 
 app.listen(PORT, () =>{
-    dbConnect();
     console.log(`server is running at http://localhost:${PORT}`)
 })
 
