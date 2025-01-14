@@ -8,11 +8,10 @@ const productRoutes = require('./routes/productRoutes.js')
 const paymentRoutes = require('./routes/stripeRoutes.js')
 const orderRoutes = require('./routes/orderRoutes.js')
 const app = express();
-dbConnect();
+
 
 // middleware
-// app.use(cors())
-const PORT = process.env.PORT || 4321
+const PORT = process.env.PORT || 1234
 
 const allowedOrigins = [
     "http://localhost:5173", "http://localhost:5174", // Local development
@@ -59,6 +58,7 @@ app.get('/', (req, res) =>{
 })
 
 app.listen(PORT, () =>{
+    dbConnect();
     console.log(`server is running at http://localhost:${PORT}`)
 })
 

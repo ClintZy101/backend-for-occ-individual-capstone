@@ -1,11 +1,9 @@
-const User = require('../models/userModel.js');
+const User = require("../models/userModel.js");
 
 const getAllUsers = async (req, res) => {
   try {
-    // Fetch all users and populate the user field
-    const users = await User.find()
-    // .populate("user", "username email");
-
+    // Fetch all users 
+    const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -13,4 +11,4 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers}
+module.exports = { getAllUsers };
